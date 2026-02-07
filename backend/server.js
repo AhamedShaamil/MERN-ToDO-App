@@ -4,11 +4,17 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import todoRoutes from './routes/todoRoutes.js';
 
-dotenv.config();
+dotenv.config({ path: './backend/.env' });
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI || typeof MONGODB_URI !== 'string') {
+  console.error('Environment variable MONGODB_URI is not set or not a string.');
+  console.error('Expected a MongoDB connection string in backend/.env or the process environment.');
+  process.exit(1);
+}
 
 app.use(express.json());
 app.use(cors());
